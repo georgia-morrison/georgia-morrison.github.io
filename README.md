@@ -9,4 +9,8 @@
 * This project was completed as part of my Statistical Methods class at univeristy
 * It looks at finding patterns amongst voters
 
+[Sulphur Dioxide over Europe](https://github.com/georgia-morrison/sulphur-dioxide-over-europe)
+* Another project completerd as part of my Statistical Methods class at university
+* It looks at SO2 levels over different European measuring stations in the 1990's
+
 ## SQL Projects
