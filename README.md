@@ -6,7 +6,7 @@
 
 ## R Projects
 [The Scottish Referendum](https://github.com/georgia-morrison/scottish-referendum)
-* This project was completed as part of my Statistical Methods class at univeristy
+* This project was completed as part of my Statistical Methods class at university
 * It looks at finding patterns amongst voters
 
 [Sulphur Dioxide over Europe](https://github.com/georgia-morrison/sulphur-dioxide-over-europe)
