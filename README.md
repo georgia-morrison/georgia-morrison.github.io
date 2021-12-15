@@ -3,6 +3,10 @@
 ### All of these projects include a section at the end relating to my main learnings from the project, and how I moved past difficulties I faced.
 
 ## Python Projects
+[Sales Spreadsheet Analysis](https://github.com/georgia-morrison/sales_analysis_cfg)
+* This project was completed as part of Code First Girls Python Kickstarter course and was a collaboration between me and another student
+* The task was to read in a CSV file and output the total sales across the year
+* We then had the option to extend our project which we did through a graph and table
 
 ## R Projects
 [The Scottish Referendum](https://github.com/georgia-morrison/scottish-referendum)
