@@ -59,24 +59,24 @@
 								<h4> Importing the necessary libraries and modules.</h4>
 								<pre>
 									<code>
-										import csv
-										import ssl
-										ssl._create_default_https_context = ssl._create_unverified_context
-										import matplotlib.pyplot as plt
-										import seaborn as sns
-										import pandas as pd
+									import csv
+									import ssl
+									ssl._create_default_https_context = ssl._create_unverified_context
+									import matplotlib.pyplot as plt
+									import seaborn as sns
+									import pandas as pd
 									</code>
 								</pre>
 								<h4> Creating a function to read in the CSV file and create a list. </h4>
 								<pre>
 									<code>
-										def read_data():
-										    data = []
-										    with open('sales.csv', 'r') as sales_csv:
-											spreadsheet = csv.DictReader(sales_csv)
-											for row in spreadsheet:
-											    data.append(row)
-										    return data
+									def read_data():
+									    data = []
+									    with open('sales.csv', 'r') as sales_csv:
+										spreadsheet = csv.DictReader(sales_csv)
+										for row in spreadsheet:
+										    data.append(row)
+									    return data
 								       	</code>
 								</pre>
 							</div>
