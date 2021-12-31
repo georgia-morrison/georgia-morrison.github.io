@@ -96,6 +96,20 @@ def run():
 run()
 									</code>
 								</pre>
+								<p>Following this we then extended the project by creating a graph that displayed the sales for each month. This was new to us as we had never used seaborn before and it took a lot of trial and error to get it to work.</p>
+								<h4>Using pandas to read in the csv file. The next line creates a bar plot with the month on the x-axis and sales on the y-axis. We then added a title and labels to the graph, and finally used the show function to display the graph.</h4>
+								<pre>
+									<code>
+sales = pd.read_csv('sales.csv')
+sns.barplot(x='month', y='sales', data=sales)
+plt.title('Sales By Month')
+plt.xlabel("Month")
+plt.ylabel("Sales")
+plt.show()
+									</code>
+								</pre>
+								<p> This gave us the output of the following graph.</p>
+								<img src="images/Figure_1.png">
 							</div>
 						</section>
 
