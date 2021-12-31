@@ -67,6 +67,18 @@
 										import pandas as pd
 									</code>
 								</pre>
+								<h4> Creating a function to read in the CSV file and create a list. </h4>
+								<pre>
+									<code>
+										def read_data():
+										    data = []
+										    with open('sales.csv', 'r') as sales_csv:
+											spreadsheet = csv.DictReader(sales_csv)
+											for row in spreadsheet:
+											    data.append(row)
+										    return data
+								       	</code>
+								</pre>
 							</div>
 						</section>
 
