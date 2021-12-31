@@ -79,6 +79,23 @@ def read_data():
     return data
 									</code>
 								</pre>
+								<h4>Creating a function that calls the previous function and adds the data to a variable called 'sales'. The function then prints the total sales from the year.</h4>
+								<pre>
+									<code>
+def run():
+    data = read_data()
+
+    sales = []
+    for row in data:
+        sale = int(row['sales'])
+        sales.append(sale)
+
+    total = sum(sales)
+    print('Total sales: {}'.format(total))
+
+run()
+									</code>
+								</pre>
 							</div>
 						</section>
 
