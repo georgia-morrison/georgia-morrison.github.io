@@ -56,29 +56,12 @@
 								</header>
 								<p>A report that finds and analyses voting patterns from the Scottish Independence Referendum.</p>
                 
-								<h4> Importing the necessary libraries and modules.</h4>
-									<pre>
-										<code>
-import csv
-import ssl
-ssl._create_default_https_context = ssl._create_unverified_context
-import matplotlib.pyplot as plt
-import seaborn as sns
-import pandas as pd
-										</code>
-									</pre>
-								<h4> Creating a function to read in the CSV file and create a list. </h4>
-								<pre>	
-									<code>
-def read_data():
-    data = []
-    with open('sales.csv', 'r') as sales_csv:
-	spreadsheet = csv.DictReader(sales_csv)
-	for row in spreadsheet:
-	    data.append(row)
-    return data
-									</code>
-								</pre>
+								<h4>1 - Introduction</h4>
+								<p>In 2014, Scotland held a referendum in order to determine whether or not Scotland should leave the UK and become an independent state. The data this report will be examines voting patterns based on a series of variables. This report will focus on comparing the percentage of people voting No against unemployment rates, national identity and age. Similarly, this report will compare the turnout of voters against the same three variables. The data in each case is categorised by Scottish Council Area.</p>
+									
+								<h4> 2 - Voting Plots </h4>
+								
+								
 								<h4>Creating a function that calls the previous function and adds the data to a variable called 'sales'. The function then prints the total sales from the year.</h4>
 								<pre>
 									<code>
