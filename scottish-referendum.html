@@ -60,65 +60,19 @@
 								<p>In 2014, Scotland held a referendum in order to determine whether or not Scotland should leave the UK and become an independent state. The data this report will be examines voting patterns based on a series of variables. This report will focus on comparing the percentage of people voting No against unemployment rates, national identity and age. Similarly, this report will compare the turnout of voters against the same three variables. The data in each case is categorised by Scottish Council Area.</p>
 									
 								<h4> 2 - Voting Plots </h4>
-								<img src="images/Voted No v. Unemployment.png">
-								<h6>Figure 1: A scatter plot comparing the percentage of voters voting No in the Scottish Referendum against the unemployment rate. The size of the points is proportionate to the number of voters in the council area.</h6>
-								<img src='images/Voted No v. Unemployment Names.png'>
-								<h6>Figure 2: The sames scatterplot as Figure 1, however each point in respresented by the name of the council area the data shows.<h6>
-								<p>Figure 1 demonstrates that there is a negative correlation between the percentage of voters voting No and the unemployment rate of an area. It is a general trend that the lower the unemployment rate, the more voters are not in favour of Scottish Independence. Comparing this with Figure 2 we see a geographical pattern. Council areas in the Central Scotland have a higher percentage of voters voting No, with a few exceptions such as West Dumbartonshire, Glasgow and North Lanarkshire. As a result, in general, it can be seen that areas around Glasgow tend to have a higher unemployment rate, again with some exceptions as mentioned previously. Dundee is also an anomaly, although it is East coast it has high levels of deprivation.</p>
+								<div class="row">
+								  <div class="column">
+								    <img src="images/Voted No v. Unemployment.png" style="width:100%">
+								    <h6>Figure 1: A scatter plot comparing the percentage of voters voting No in the Scottish Referendum against the unemployment rate. The size of the points is proportionate to the number of voters in the council area.</h6>
+								  </div>
+								  <div class="column">
+								    <img src='images/Voted No v. Unemployment Names.png' style="width:100%">
+								    <h6>Figure 2: The same scatterplot as Figure 1, however each point in respresented by the name of the council area the data shows.<h6>
+								  </div>
+								</div>
 								
-									
-								<h4>Creating a function that calls the previous function and adds the data to a variable called 'sales'. The function then prints the total sales from the year.</h4>
-								<pre>
-									<code>
-def run():
-    data = read_data()
-
-    sales = []
-    for row in data:
-        sale = int(row['sales'])
-        sales.append(sale)
-
-    total = sum(sales)
-    print('Total sales: {}'.format(total))
-
-run()
-									</code>
-								</pre>
-								<p>Following this we then extended the project by creating a graph that displayed the sales for each month. This was new to us as we had never used seaborn before and it took a lot of trial and error to get it to work.</p>
-								<h4>Using pandas to read in the csv file. The next line creates a bar plot with the month on the x-axis and sales on the y-axis. We then added a title and labels to the graph, and finally used the show function to display the graph.</h4>
-								<pre>
-									<code>
-sales = pd.read_csv('sales.csv')
-sns.barplot(x='month', y='sales', data=sales)
-plt.title('Sales By Month')
-plt.xlabel("Month")
-plt.ylabel("Sales")
-plt.show()
-									</code>
-								</pre>
-								<p> This gave us the output of the following graph.</p>
-								<img src="images/Figure_1.png">
-								<p>We then decided to extend our project further by creating a table of summary statistics.</p>
-								<h4>First we used pandas again to create a data frame from the data set. We then created new variables describing key statistics by using pandas built in functions. Finally we formatted this as a table, created another data frame and printed it.</h4>
-								<pre>
-									<code>
-df = pd.DataFrame(sales)
-max_sales = df['sales'].max()
-min_sales = df['sales'].min()
-max_spend = df['expenditure'].max()
-min_spend = df['expenditure'].min()
-
-d = [['Most Sales', max_sales],
-     ['Least Sales', min_sales],
-     ['Most Spending', max_spend],
-     ['Least Spending', min_spend]]
-new_df = pd.DataFrame(d)
-print(new_df)
-									</code>
-								</pre>
-								<h3>Learnings From The Project</h3>
-								<p>If we had more time we would format the summary table to be more presentable, and find a way to add in the months these figures occurred in.<br />
-								We also struggled a bit with how remote this course was and having to work on a project collaboratively whilst being at opposite ends of the country. This helped us to build resilience and learn to use outside resources online to imprve our project.</p>
+								<p>Figure 1 demonstrates that there is a negative correlation between the percentage of voters voting No and the unemployment rate of an area. It is a general trend that the lower the unemployment rate, the more voters are not in favour of Scottish Independence. Comparing this with Figure 2 we see a geographical pattern. Council areas in the Central Scotland have a higher percentage of voters voting No, with a few exceptions such as West Dumbartonshire, Glasgow and North Lanarkshire. As a result, in general, it can be seen that areas around Glasgow tend to have a higher unemployment rate, again with some exceptions as mentioned previously. Dundee is also an anomaly, although it is East coast it has high levels of deprivation.</p>
+							
 							</div>
 						</section>
 
