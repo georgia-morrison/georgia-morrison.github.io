@@ -98,6 +98,24 @@
 								</div>
 								<p>Looking at Figure 3, it appears as though the quadratic line fits the shape of the data fairly well. The R2 value is around 85%, echoing that the model is fairly representative of the relationship between the two variables. This shows that most of the variation in the glucose levels is taken into account.</p>
 								
+								<h5>3.3 - Predictions</h5>
+								<p>Using the equation from section 3.1, we can try to predict the glucose levels of potatoes based on their storage time.</p>
+								<p>First let’s consider when the potatoes have been stored for 3 weeks. This would give a glucose content of 151.1136. Similarly, let’s consider a longer storage time of seventeen weeks. This gives a glucose content of 167.4222. Both of these results seem reasonable when thought about with respect to the existing data points.</p>
+								
+								<h4>4 - Checking Assumptions</h4>
+								<h5>4.1 - Standardised Residuals vs. Fitted Values</h5>
+								<div style="width: 100%; overflow: hidden;">
+								     <div style="width: 48%; float: left;"> 
+									     <img height=270 src="images/Standardised Res v Fitted.png">
+									     <p>Figure 4: Scatterplot showing standardised residuals against fitted values of the regression model.</p>
+									</div>
+								     <div style="margin-left: 52%;"> 
+									     <p>Figure 4 shows that the points are evenly scattered above and below the zero line. The points tend to be on the lower end of the fitted values. This suggests that we can assume the random errors have mean zero and that our regression model is appropriate.</p>
+									     <p>In terms of vertical variation, there is much more variation in the values above the zero line when compared with those below. We therefore cannot assume the random errors have a constant variance.</p>
+									     <p>The independence of the random errors can be assumed given the data was taken from different bags of potatoes.</p>
+									 </div>
+								</div>
+								
 								
 								<h3>Learnings From This Project</h3>
 								<p>The main skill I gained from this report was using the different graphing functions on R, and how this allowed for different types of analysis.</p>
