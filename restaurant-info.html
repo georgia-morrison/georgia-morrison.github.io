@@ -65,6 +65,16 @@ import pandas
 									</code>
 								</pre>
 								
+								<p4> I have used pandas before but have never encountered requests or BeautifulSoup. They are used to simplify work for programmers, and sift through data in html files to find specific things.</p4>
+								
+								<p4> Following package installation, we accessed the Zomato website.</p4>
+								<pre>
+									<code>
+headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) '
+                         'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'}
+response = requests.get("https://www.zomato.com/bangalore/top-restaurants", headers=headers)
+									</code>
+								</pre>
 							</div>
 						</section>
 
