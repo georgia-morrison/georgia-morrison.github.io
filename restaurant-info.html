@@ -86,6 +86,17 @@ soup = BeautifulSoup(content, 'html.parser')
 								</pre>
 								
 								<h4>Formatting the Data</h4>
+								
+								<p4>Currently the data is quite hard to read if you don't know what you're looking at. The info we need to extract is the name adn address of the restaurant, along with the type of food it serves.</p4>
+								<p4>This next block of code separates the website so we are now only using the part that displays the Top Restaurants.</p4>
+								<pre>
+									<code>
+top_rest = soup.find_all("div", attrs={"class": "bb0 collections-grid col-l-16"})
+list_tr = top_rest[0].find_all("div", attrs={"class": "col-s-8 col-l-1by3"})
+									</code>
+								</pre>
+								
+								<p4>By inspecting these elements in our browser, we can pick out the specific font styles used to extract the right info.</p4>
 							</div>
 						</section>
 
