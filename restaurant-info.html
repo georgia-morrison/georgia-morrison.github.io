@@ -109,6 +109,18 @@ for tr in list_tr:
 list_rest
 									</code>
 								</pre>
+								
+								<p4>This data is stored in a dataframe, with the restaurant name, address, and food type in separate columns.</p4>
+								<p4>The final step is to store the data in a readable file format so that it can be shared with others. This is where pandas is used to convert the file to csv format.</p4>
+								<pre>
+									<code>
+df = pandas.DataFrame(list_rest)
+df.to_csv('zomato_res.csv', index = False)
+									</code>
+								</pre>
+								
+								<h3>Learnings From This Project</h3>
+								<p4>This is the first time I have tried a project completely by myself. I used new libraries and packages so it was intersting to see how they were used. This is also the first time I've accessed a website through my code so that's a new skill I've learned as well.</p4>
 							</div>
 						</section>
 
