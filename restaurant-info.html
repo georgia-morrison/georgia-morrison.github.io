@@ -87,7 +87,7 @@ soup = BeautifulSoup(content, 'html.parser')
 								
 								<h4>Formatting the Data</h4>
 								
-								<p4>Currently the data is quite hard to read if you don't know what you're looking at. The info we need to extract is the name adn address of the restaurant, along with the type of food it serves.</p4>
+								<p4>Currently the data is quite hard to read if you don't know what you're looking at. The info we need to extract is the name and address of the restaurant, along with the type of food it serves.</p4>
 								<p4>This next block of code separates the website so we are now only using the part that displays the Top Restaurants.</p4>
 								<pre>
 									<code>
@@ -97,6 +97,18 @@ list_tr = top_rest[0].find_all("div", attrs={"class": "col-s-8 col-l-1by3"})
 								</pre>
 								
 								<p4>By inspecting these elements in our browser, we can pick out the specific font styles used to extract the right info.</p4>
+								<pre>
+									<code>
+list_rest = []
+for tr in list_tr:
+    dataframe = {}
+    dataframe["rest_name"] = (tr.find("div", attrs={"class": "res_title zblack bold nowrap"})).text.replace('\n', ' ')
+    dataframe["rest_address"] = (tr.find("div", attrs={"class": "nowrap grey-text fontsize5 ttupper"})).text.replace('\n', ' ')
+    dataframe["cuisine_type"] = (tr.find("div", attrs={"class": "nowrap grey-text"})).text.replace('\n', ' ')
+    list_rest.append(dataframe)
+list_rest
+									</code>
+								</pre>
 							</div>
 						</section>
 
