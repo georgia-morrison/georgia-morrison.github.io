@@ -75,6 +75,14 @@ headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) '
 response = requests.get("https://www.zomato.com/bangalore/top-restaurants", headers=headers)
 									</code>
 								</pre>
+								
+								<p4> Now we read the website. Response is used here to grab the content we need from the website, and then BeautifulSoup is used to filter through the information to only keep the data with html tags.</p4>
+								<pre>
+									<code>
+content = response.content
+soup = BeautifulSoup(content, 'html.parser')
+									</code>
+								</pre>
 							</div>
 						</section>
 
