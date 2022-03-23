@@ -1,0 +1,618 @@
+
+<!DOCTYPE HTML>
+<!--
+	Read Only by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Coding Portfolio</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<section id="header">
+				<header>
+					<span class="image avatar"><img src="images/IMG_6879.jpeg" alt="" /></span>
+					<h1 id="logo"><a href="#">Georgia Morrison</a></h1>
+					<p>University of Glasgow<br />
+					BSc Hons Statistics | Spring 2024</p>
+				</header>
+				<nav id="nav">
+					<ul>
+						<li><a href="index.html" class="active">About</a></li>
+						<li><a href="index.html">Python Projects</a></li>
+						<li><a href="index.html">SQL Projects</a></li>
+						<li><a href="index.html">R Projects</a></li>
+						<li><a href="index.html">MatLab Projects</a></li>
+					</ul>
+				</nav>
+				<footer>
+					<ul class="icons">
+						<li><a href="https://www.linkedin.com/in/georgia-morrison-3302131ba/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+						<li><a href="https://github.com/georgia-morrison" class="icon brands fa-github"><span class="label">Github</span></a></li>
+						<li><a href="mailto:georgia.morrison25@icloud.com" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+					</ul>
+				</footer>
+			</section>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- One -->
+							<div class="image main" data-position="center">
+								<img src="images/Music Pres Cover" alt="" />
+							</div>
+							<div class="container">
+								<header class="major">
+									<h2>Music Streaming App</h2>
+								</header>
+								<p>Final project from Code First Girls Data & SQL Kickstarter course. We had free reign to chose what our project was on, so I chose to do a simplified version of a music streaming app.</p>
+							
+								<h4> Creating the Database</h4>
+                <p> The first step was to set up the initial databse. Then I had to add tables and ensure my Primary and Foreign key constraints were correct. </p>
+									<pre>
+										<code>
+CREATE DATABASE Music;
+USE Music;
+
+CREATE TABLE Artists
+(id INT NOT NULL PRIMARY KEY,
+name VARCHAR(50));
+
+CREATE TABLE Albums
+(id INT NOT NULL PRIMARY KEY,
+name VARCHAR(100),
+artist_id INT ,
+FOREIGN KEY (artist_id) REFERENCES Artists(id));
+
+CREATE TABLE Users
+(id INT NOT NULL PRIMARY KEY,
+name VARCHAR(50));
+
+CREATE TABLE Playlists
+(id INT NOT NULL PRIMARY KEY,
+name VARCHAR(50),
+description VARCHAR(100),
+user_id INT,
+FOREIGN KEY (user_id) REFERENCES Users(id));
+
+CREATE TABLE Songs
+(id INT NOT NULL PRIMARY KEY,
+name VARCHAR(50),
+artist_id INT,
+FOREIGN KEY (artist_id) REFERENCES Artists(id),
+album_id INT,
+FOREIGN KEY (album_id) REFERENCES Albums(id),
+minutes DECIMAL(5,2),
+seconds INT);
+
+CREATE TABLE PlaylistSongs
+(id INT NOT NULL PRIMARY KEY,
+user_id INT,
+FOREIGN KEY (user_id) REFERENCES Users(id),
+playlist_id INT,
+FOREIGN KEY (playlist_id) REFERENCES Playlists(id),
+song_id INT,
+FOREIGN KEY (song_id) REFERENCES Songs(id));
+
+CREATE TABLE Friends
+(id INT NOT NULL PRIMARY KEY,
+user_id INT,
+FOREIGN KEY (user_id) REFERENCES Users(id),
+user_friend_id INT,
+FOREIGN KEY (user_friend_id) REFERENCES Users(id));
+
+CREATE TABLE Played
+(id INT NOT NULL PRIMARY KEY,
+song_id INT,
+FOREIGN KEY (song_id) REFERENCES Songs(id),
+user_id INT,
+FOREIGN KEY (user_id) REFERENCES Users(id),
+date DATE);
+
+CREATE TABLE Likes
+(id INT NOT NULL PRIMARY KEY,
+user_id INT,
+FOREIGN KEY (user_id) REFERENCES Users(id),
+song_id INT,
+FOREIGN KEY (song_id) REFERENCES Songs(id));
+										</code>
+									</pre>
+                 <p> As can be seen, I made tables for Artists, Albums, Users, Playlists, Songs, Playlist Songs, Friends, Played and Likes. The relationships of these tables can be seen in the ERD below.</p>
+                 <img src="images/MusicERD.png">
+                 <p>I then imported all my data from csv files to populate the tables.</p>
+                 
+								<h4> Selecting All Songs from a Specified Playlist </h4>
+                <p>I used two Joins to create a table that displays the playlist title and description, and all the songs in the playlist. For this example I used my “You’re In The Band Playlist”.</p>
+								<pre>	
+									<code>
+ SELECT 
+ p.name, p.description,
+ s.name SongName
+ FROM Playlists p
+ JOIN PlaylistSongs ps ON p.id = ps.playlist_id
+ JOIN Songs s ON ps.song_id = s.id
+ WHERE p.id = 1;
+									</code>
+								</pre>
+                <p>This gave the output shown in the table below.</p>
+                <img src="images/You're In The Band.png">
+                
+								<h4>Query & Subquery</h4>
+                <p>My query found all the songs by a specific artist( here ‘The 1975’) and then my subquery displayed the songs by this artist that had been played more than once by the user. I needed to use Group By here too.</p>
+								<pre>
+									<code>
+ SELECT s.name
+ FROM Songs s 
+ WHERE artist_id = 2;
+ 
+ SELECT s.name
+ FROM Played p
+ JOIN Songs s ON p.song_id = s.id
+ WHERE p.user_id = 1 AND p.song_id IN 
+ (SELECT s.id
+ FROM Songs s 
+ WHERE artist_id = 2)
+ GROUP BY p.song_id, s.name
+ HAVING COUNT(p.song_id) > 1;
+									</code>
+								</pre>
+                <p>The query gave an output of the first table below, and the subquery gave an output of the second. It took a lot of trial and error to get the second table to display the output as I wasnted, but after a lot of perseverence I got there eventually.</p>
+                <img src="images/1975Querypng.png">
+                <img src="images/1975Subquery.png">
+                
+                <h4>Stored Function</h4>
+                <p>This was the final core requirement for the project. I created a Stored Function to show whether or not a user has friends on the app.</p>
+                <pre>
+                  <code>
+DELIMITER $$
+CREATE FUNCTION hasFriends
+	(friend_count INT)
+RETURNS VARCHAR(50)
+DETERMINISTIC
+BEGIN
+	DECLARE RETURNVALUE VARCHAR(50);
+	IF friend_count > 0 THEN
+		SET RETURNVALUE = 'Has friends';
+	ELSE
+		SET RETURNVALUE = 'Has no friends';
+	END IF;
+	RETURN (RETURNVALUE);
+END$$
+DELIMITER $$
+
+SELECT Users.Name, hasFriends(count(friends.user_friend_id))
+FROM Users 
+LEFT JOIN Friends on Users.id = Friends.User_id
+GROUP BY Users.id
+                  </code>
+                </pre>
+                <p>Thsi gave the output shown below.</p>
+                <img src="images/FriendFunction.png">
+                
+								<p>Following this I then extended the project to meet the advanced requirements.</p>
+								<h4> Advanced Requirements</h4>
+                <p>I combined 4 tables to create a view that displays Song Title, Artist, Album, Duration and Times Played, for a specific user.</p>
+								<pre>
+									<code>
+CREATE VIEW Zoe_Played AS
+SELECT 
+s.name Song, a.name Artist, al.name Album, s.minutes Duration, COUNT(p.song_id) Played
+FROM Played p
+JOIN Songs s ON p.song_id = s.id
+JOIN Artists a ON a.id = s.artist_id
+JOIN Albums al ON al.id = s.album_id
+WHERE user_id = 2
+GROUP BY s.name, a.name, al.name, s.minutes;
+
+SELECT *
+FROM Zoe_Played;
+									</code>
+								</pre>
+								<p> This gave us the output of the following table.</p>
+								<img src="images/4TablesMusic">
+                
+								<p>Then I extended the project further. I created a trigger so that when a new user is added to the system, a default, empty playlist is added in the format: “Username’s Favourite Songs”.</p>
+								<pre>
+									<code>
+DELIMITER $$
+CREATE TRIGGER DefaultUserPlaylist
+	AFTER INSERT
+	ON Users FOR EACH ROW
+BEGIN
+	DECLARE MaxPlaylistID INT;
+    SET  MaxPlaylistID = (SELECT MAX(id)+1 FROM Playlists);
+	INSERT INTO Playlists
+	(id, name, description, user_id)
+    VALUES 
+    (MaxPlaylistID,CONCAT(new.name,'''s Favourites'), 'Favourite songs', new.id);
+END$$
+DELIMITER ;
+
+INSERT INTO Users
+(id, name)
+VALUES
+(6, 'Sophia Carlin');
+
+SELECT * FROM Playlists;
+									</code>
+								</pre>
+                <p>This took a lot of tweaking, and deleting and readding users to get this to work. Ideally I would have liked the playlist title to not include the user's last name, but decided to take the win in getting it into the format I managed to get. If I did this project I would format my Users table to be first and last name.</p>
+                
+                <h3>Learnings From The Project</h3>
+								<p>The first thing I learned from this project was how to import CSV files in SQL, and how to overcome some of the challenges that come with formatting the files.
+                   I’ve also learned how frustrating debugging can be! Spent ages looking up error codes and being glad when I solved one error, even if it created another!
+                   Through this project I got a deeper understanding of the different queries in SQL and how they can be used together to create more complex structures.
+                   I can code a bit in Python so this was a big change, and it was sometimes frustrating when I knew how I could code something in Python but it didn’t translate to SQL.</p>
+							
+                <h4>Below I've included my presentation used to show my class the project. (Slide format from SlidesGo)
+                <iframe src="https://www.slideshare.net/slideshow/embed_code/key/GT0S5u42HbOd3H?hostedIn=slideshare&page=upload" width="476" height="400" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+              </div>
+						</section>
+
+						
+			
+
+						<!-- Five -->
+						<!--
+							<section id="five">
+								<div class="container">
+									<h3>Elements</h3>
+
+									<section>
+										<h4>Text</h4>
+										<p>This is <b>bold</b> and this is <strong>strong</strong>. This is <i>italic</i> and this is <em>emphasized</em>.
+										This is <sup>superscript</sup> text and this is <sub>subscript</sub> text.
+										This is <u>underlined</u> and this is code: <code>for (;;) { ... }</code>. Finally, <a href="#">this is a link</a>.</p>
+										<hr />
+										<header>
+											<h4>Heading with a Subtitle</h4>
+											<p>Lorem ipsum dolor sit amet nullam id egestas urna aliquam</p>
+										</header>
+										<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus ornare mi ut ante amet placerat aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing blandit tempus accumsan.</p>
+										<header>
+											<h5>Heading with a Subtitle</h5>
+											<p>Lorem ipsum dolor sit amet nullam id egestas urna aliquam</p>
+										</header>
+										<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus ornare mi ut ante amet placerat aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing blandit tempus accumsan.</p>
+										<hr />
+										<h2>Heading Level 2</h2>
+										<h3>Heading Level 3</h3>
+										<h4>Heading Level 4</h4>
+										<h5>Heading Level 5</h5>
+										<h6>Heading Level 6</h6>
+										<hr />
+										<h5>Blockquote</h5>
+										<blockquote>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan faucibus. Vestibulum ante ipsum primis in faucibus lorem ipsum dolor sit amet nullam adipiscing eu felis.</blockquote>
+										<h5>Preformatted</h5>
+										<pre><code>i = 0;
+
+while (!deck.isInOrder()) {
+    print 'Iteration ' + i;
+    deck.shuffle();
+    i++;
+}
+
+print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
+									</section>
+
+									<section>
+										<h4>Lists</h4>
+										<div class="row">
+											<div class="col-6 col-12-xsmall">
+												<h5>Unordered</h5>
+												<ul>
+													<li>Dolor pulvinar etiam magna etiam.</li>
+													<li>Sagittis adipiscing lorem eleifend.</li>
+													<li>Felis enim feugiat dolore viverra.</li>
+												</ul>
+												<h5>Alternate</h5>
+												<ul class="alt">
+													<li>Dolor pulvinar etiam magna etiam.</li>
+													<li>Sagittis adipiscing lorem eleifend.</li>
+													<li>Felis enim feugiat dolore viverra.</li>
+												</ul>
+											</div>
+											<div class="col-6 col-12-xsmall">
+												<h5>Ordered</h5>
+												<ol>
+													<li>Dolor pulvinar etiam magna etiam.</li>
+													<li>Etiam vel felis at lorem sed viverra.</li>
+													<li>Felis enim feugiat dolore viverra.</li>
+													<li>Dolor pulvinar etiam magna etiam.</li>
+													<li>Etiam vel felis at lorem sed viverra.</li>
+													<li>Felis enim feugiat dolore viverra.</li>
+												</ol>
+												<h5>Icons</h5>
+												<ul class="icons">
+													<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+													<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+													<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+													<li><a href="#" class="icon brands fa-github"><span class="label">Github</span></a></li>
+													<li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
+													<li><a href="#" class="icon brands fa-tumblr"><span class="label">Tumblr</span></a></li>
+												</ul>
+											</div>
+										</div>
+										<h5>Actions</h5>
+										<ul class="actions">
+											<li><a href="#" class="button primary">Default</a></li>
+											<li><a href="#" class="button">Default</a></li>
+											<li><a href="#" class="button alt">Default</a></li>
+										</ul>
+										<ul class="actions small">
+											<li><a href="#" class="button primary small">Small</a></li>
+											<li><a href="#" class="button small">Small</a></li>
+											<li><a href="#" class="button alt small">Small</a></li>
+										</ul>
+										<div class="row">
+											<div class="col-3 col-6-medium col-12-xsmall">
+												<ul class="actions stacked">
+													<li><a href="#" class="button primary">Default</a></li>
+													<li><a href="#" class="button">Default</a></li>
+													<li><a href="#" class="button alt">Default</a></li>
+												</ul>
+											</div>
+											<div class="col-3 col-6 col-12-xsmall">
+												<ul class="actions stacked">
+													<li><a href="#" class="button primary small">Small</a></li>
+													<li><a href="#" class="button small">Small</a></li>
+													<li><a href="#" class="button alt small">Small</a></li>
+												</ul>
+											</div>
+											<div class="col-3 col-6-medium col-12-xsmall">
+												<ul class="actions stacked">
+													<li><a href="#" class="button primary fit">Default</a></li>
+													<li><a href="#" class="button fit">Default</a></li>
+													<li><a href="#" class="button alt fit">Default</a></li>
+												</ul>
+											</div>
+											<div class="col-3 col-6-medium col-12-xsmall">
+												<ul class="actions stacked">
+													<li><a href="#" class="button primary small fit">Small</a></li>
+													<li><a href="#" class="button small fit">Small</a></li>
+													<li><a href="#" class="button alt small fit">Small</a></li>
+												</ul>
+											</div>
+										</div>
+									</section>
+
+									<section>
+										<h4>Table</h4>
+										<h5>Default</h5>
+										<div class="table-wrapper">
+											<table>
+												<thead>
+													<tr>
+														<th>Name</th>
+														<th>Description</th>
+														<th>Price</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>Item One</td>
+														<td>Ante turpis integer aliquet porttitor.</td>
+														<td>29.99</td>
+													</tr>
+													<tr>
+														<td>Item Two</td>
+														<td>Vis ac commodo adipiscing arcu aliquet.</td>
+														<td>19.99</td>
+													</tr>
+													<tr>
+														<td>Item Three</td>
+														<td> Morbi faucibus arcu accumsan lorem.</td>
+														<td>29.99</td>
+													</tr>
+													<tr>
+														<td>Item Four</td>
+														<td>Vitae integer tempus condimentum.</td>
+														<td>19.99</td>
+													</tr>
+													<tr>
+														<td>Item Five</td>
+														<td>Ante turpis integer aliquet porttitor.</td>
+														<td>29.99</td>
+													</tr>
+												</tbody>
+												<tfoot>
+													<tr>
+														<td colspan="2"></td>
+														<td>100.00</td>
+													</tr>
+												</tfoot>
+											</table>
+										</div>
+
+										<h5>Alternate</h5>
+										<div class="table-wrapper">
+											<table class="alt">
+												<thead>
+													<tr>
+														<th>Name</th>
+														<th>Description</th>
+														<th>Price</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>Item One</td>
+														<td>Ante turpis integer aliquet porttitor.</td>
+														<td>29.99</td>
+													</tr>
+													<tr>
+														<td>Item Two</td>
+														<td>Vis ac commodo adipiscing arcu aliquet.</td>
+														<td>19.99</td>
+													</tr>
+													<tr>
+														<td>Item Three</td>
+														<td> Morbi faucibus arcu accumsan lorem.</td>
+														<td>29.99</td>
+													</tr>
+													<tr>
+														<td>Item Four</td>
+														<td>Vitae integer tempus condimentum.</td>
+														<td>19.99</td>
+													</tr>
+													<tr>
+														<td>Item Five</td>
+														<td>Ante turpis integer aliquet porttitor.</td>
+														<td>29.99</td>
+													</tr>
+												</tbody>
+												<tfoot>
+													<tr>
+														<td colspan="2"></td>
+														<td>100.00</td>
+													</tr>
+												</tfoot>
+											</table>
+										</div>
+									</section>
+
+									<section>
+										<h4>Buttons</h4>
+										<ul class="actions">
+											<li><a href="#" class="button primary">Primary</a></li>
+											<li><a href="#" class="button">Default</a></li>
+											<li><a href="#" class="button alt">Alternate</a></li>
+										</ul>
+										<ul class="actions">
+											<li><a href="#" class="button primary large">Large</a></li>
+											<li><a href="#" class="button">Default</a></li>
+											<li><a href="#" class="button alt small">Small</a></li>
+										</ul>
+										<ul class="actions fit">
+											<li><a href="#" class="button primary fit">Fit</a></li>
+											<li><a href="#" class="button fit">Fit</a></li>
+											<li><a href="#" class="button alt fit">Fit</a></li>
+										</ul>
+										<ul class="actions fit small">
+											<li><a href="#" class="button primary fit small">Fit + Small</a></li>
+											<li><a href="#" class="button fit small">Fit + Small</a></li>
+											<li><a href="#" class="button alt fit small">Fit + Small</a></li>
+										</ul>
+										<ul class="actions">
+											<li><a href="#" class="button primary icon solid fa-download">Icon</a></li>
+											<li><a href="#" class="button icon solid fa-download">Icon</a></li>
+											<li><a href="#" class="button alt icon solid fa-check">Icon</a></li>
+										</ul>
+										<ul class="actions">
+											<li><span class="button primary disabled">Primary</span></li>
+											<li><span class="button disabled">Default</span></li>
+											<li><span class="button alt disabled">Alternate</span></li>
+										</ul>
+									</section>
+
+									<section>
+										<h4>Form</h4>
+										<form method="post" action="#">
+											<div class="row gtr-uniform">
+												<div class="col-6 col-12-xsmall">
+													<input type="text" name="demo-name" id="demo-name" value="" placeholder="Name" />
+												</div>
+												<div class="col-6 col-12-xsmall">
+													<input type="email" name="demo-email" id="demo-email" value="" placeholder="Email" />
+												</div>
+												<div class="col-12">
+													<select name="demo-category" id="demo-category">
+														<option value="">- Category -</option>
+														<option value="1">Manufacturing</option>
+														<option value="1">Shipping</option>
+														<option value="1">Administration</option>
+														<option value="1">Human Resources</option>
+													</select>
+												</div>
+												<div class="col-4 col-12-medium">
+													<input type="radio" id="demo-priority-low" name="demo-priority" checked>
+													<label for="demo-priority-low">Low Priority</label>
+												</div>
+												<div class="col-4 col-12-medium">
+													<input type="radio" id="demo-priority-normal" name="demo-priority">
+													<label for="demo-priority-normal">Normal Priority</label>
+												</div>
+												<div class="col-4 col-12-medium">
+													<input type="radio" id="demo-priority-high" name="demo-priority">
+													<label for="demo-priority-high">High Priority</label>
+												</div>
+												<div class="col-6 col-12-medium">
+													<input type="checkbox" id="demo-copy" name="demo-copy">
+													<label for="demo-copy">Email me a copy of this message</label>
+												</div>
+												<div class="col-6 col-12-medium">
+													<input type="checkbox" id="demo-human" name="demo-human" checked>
+													<label for="demo-human">I am a human and not a robot</label>
+												</div>
+												<div class="col-12">
+													<textarea name="demo-message" id="demo-message" placeholder="Enter your message" rows="6"></textarea>
+												</div>
+												<div class="col-12">
+													<ul class="actions">
+														<li><input type="submit" value="Send Message" /></li>
+														<li><input type="reset" value="Reset" class="alt" /></li>
+													</ul>
+												</div>
+											</div>
+										</form>
+									</section>
+
+									<section>
+										<h4>Image</h4>
+										<h5>Fit</h5>
+										<span class="image fit"><img src="images/banner.jpg" alt="" /></span>
+										<div class="box alt">
+											<div class="row gtr-50 gtr-uniform">
+												<div class="col-4"><span class="image fit"><img src="images/pic01.jpg" alt="" /></span></div>
+												<div class="col-4"><span class="image fit"><img src="images/pic02.jpg" alt="" /></span></div>
+												<div class="col-4"><span class="image fit"><img src="images/pic03.jpg" alt="" /></span></div>
+												<div class="col-4"><span class="image fit"><img src="images/pic02.jpg" alt="" /></span></div>
+												<div class="col-4"><span class="image fit"><img src="images/pic03.jpg" alt="" /></span></div>
+												<div class="col-4"><span class="image fit"><img src="images/pic01.jpg" alt="" /></span></div>
+												<div class="col-4"><span class="image fit"><img src="images/pic03.jpg" alt="" /></span></div>
+												<div class="col-4"><span class="image fit"><img src="images/pic01.jpg" alt="" /></span></div>
+												<div class="col-4"><span class="image fit"><img src="images/pic02.jpg" alt="" /></span></div>
+											</div>
+										</div>
+										<h5>Left &amp; Right</h5>
+										<p><span class="image left"><img src="images/avatar.jpg" alt="" /></span>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent.</p>
+										<p><span class="image right"><img src="images/avatar.jpg" alt="" /></span>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent.</p>
+									</section>
+
+								</div>
+							</section>
+						-->
+
+					</div>
+
+				<!-- Footer -->
+					<section id="footer">
+						<div class="container">
+							<ul class="copyright">
+								<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+					</section>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
